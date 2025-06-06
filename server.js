@@ -157,7 +157,13 @@ app.post('/api/v1/chapters',adminAuth, upload.single('file'), async (req, res) =
   }
 });
 
-// Start server
+
+app.use(express.static('public'));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+
 async function startServer() {
   try {
     await connectDB();

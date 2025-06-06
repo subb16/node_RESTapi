@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathonGo API</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .endpoint {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+        code {
+            background: #e9ecef;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MathonGo API</h1>
+        <p>Welcome to the Chapter Performance Dashboard API made by Subhash Patel</p>
+    </header>
+
+    <section>
+        <h2>Available Endpoints</h2>
+        
+        <div class="endpoint">
+            <h3>GET /api/v1/chapters</h3>
+            <p>Retrieve all chapters with optional filters</p>
+            <code><a href=" https://mathongo-restapi.onrender.com/api/v1/chapters">curl https://mathongo-restapi.onrender.com/api/v1/chapters</a></code>
+        </div>
+        <div class="endpoint">
+            <h3>GET /api/v1/chapters/:id</h3>
+            <p>Retrieve any chapter by its id</p>
+            <code><a href="https://mathongo-restapi.onrender.com/api/v1/chapters/:id">curl https://mathongo-restapi.onrender.com/api/v1/chapters/:id</a></code>
+        </div>
+        <div class="endpoint">
+            <h3>POST /api/v1/chapters</h3>
+            <p>Upload new chapters (Admin only)</p>
+            <code>curl -X POST -H "x-admin-token: YOUR_TOKEN" -F "file=@data.json" https://mathongo-restapi.onrender.com/api/v1/chapters</code>
+        </div>
+    </section>
+
+    <footer>
+        <p>Need help? Contact 8287493845</p>
+    </footer>
+</body>
+</html>
