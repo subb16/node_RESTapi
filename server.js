@@ -1,5 +1,5 @@
 require('dotenv').config();
-const connectDB = require('./config/db');
+const mongoose = require('mongoose');
 const express = require('express');
 const { createClient } = require('redis');
 const multer = require('multer');
@@ -7,6 +7,21 @@ const upload = multer({ dest: 'uploads/' });
 const path = require('path');
 const fs = require('fs');
 const rateLimit = require('express-rate-limit'); // Added for rate limiting
+
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('MongoDB Connected...');
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
+};
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
