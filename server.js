@@ -25,8 +25,6 @@ const connectDB = async () => {
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
-// Rate Limiting Configuration
 const limiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
   max: 30, // limit each IP to 30 requests per windowMs
@@ -92,21 +90,6 @@ app.get('/test', (req, res) => {
   });
 
 
-app.get('/api/v1/setup-admin', async (req, res) => {
-  console.log('Setup-admin endpoint called');
-  try {
-    const token = Math.random().toString(36).slice(2);
-    res.json({
-      success: true,
-      message: 'Admin token generated',
-      token: token
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: 'Server error' });
-  }
-});
-
 // Apply caching only to GET /chapters
 app.get('/api/v1/chapters', cacheMiddleware, async (req, res) => {
   try {
@@ -127,8 +110,20 @@ app.get('/api/v1/chapters/:id', async (req, res) => {
   }
 });
 
+
 const Chapter = require('./models/Chapter');
-app.post('/api/v1/chapters', upload.single('file'), async (req, res) => {
+const adminAuth = (req, res, next) => {
+  const token = req.headers['x-admin-token'];
+  
+  if (!token || token !== process.env.ADMIN_TOKEN) {
+    return res.status(403).json({
+      success: false,
+      message: 'Invalid admin token'
+    });
+  }
+  next();
+};
+app.post('/api/v1/chapters',adminAuth, upload.single('file'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
@@ -172,7 +167,8 @@ async function startServer() {
     app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
       console.log('Try these endpoints:');
-      console.log(`- GET http://localhost:${PORT}/api/v1/setup-admin`);
+      console.log(`- GET http://localhost:${PORT}/api/v1/chapters`);
+      console.log(`- GET http://localhost:${PORT}/api/v1/chapters/:id`);
     });
   } catch (err) {
     console.error('Failed to start:', err);
